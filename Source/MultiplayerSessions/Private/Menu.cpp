@@ -115,12 +115,30 @@ void UMenu::OnFindSessions(const TArray<FOnlineSessionSearchResult>& SessionResu
 	}
 	if (!bWasSuccessful || SessionResults.Num() == 0)
 	{
+		if (GEngine)
+		{
+			GEngine->AddOnScreenDebugMessage(
+				-1,
+				15.f,
+				FColor::Red,
+				FString::Printf(TEXT("Failed to Find session, Found SessiosResults: %d"), SessionResults.Num())
+			);
+		}
 		JoinButton->SetIsEnabled(true);
 	}
 }
 
 void UMenu::OnJoinSession(EOnJoinSessionCompleteResult::Type Result)
 {
+	if (GEngine)
+	{
+		GEngine->AddOnScreenDebugMessage(
+			-1,
+			15.f,
+			FColor::Red,
+			FString::Printf(TEXT("Failed to join session: %s"), LexToString(Result))
+		);
+	}
 	IOnlineSubsystem* Subsystem = IOnlineSubsystem::Get();
 	if (Subsystem)
 	{
@@ -133,7 +151,7 @@ void UMenu::OnJoinSession(EOnJoinSessionCompleteResult::Type Result)
 			APlayerController* PlayerController = GetGameInstance()->GetFirstLocalPlayerController();
 			if (PlayerController)
 			{
-				PlayerController->ClientTravel(Address, ETravelType::TRAVEL_Absolute);
+				PlayerController->ClientTravel(Address, ETravelType::TRAVEL_Absolute, true);
 			}
 		}
 	}
