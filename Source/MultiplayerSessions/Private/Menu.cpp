@@ -83,15 +83,6 @@ void UMenu::OnCreateSession(bool bWasSuccessful)
 	}
 	else
 	{
-		if (GEngine)
-		{
-			GEngine->AddOnScreenDebugMessage(
-				-1,
-				15.f,
-				FColor::Red,
-				FString(TEXT("Failed to create session!"))
-			);
-		}
 		HostButton->SetIsEnabled(true);
 	}
 }
@@ -115,30 +106,12 @@ void UMenu::OnFindSessions(const TArray<FOnlineSessionSearchResult>& SessionResu
 	}
 	if (!bWasSuccessful || SessionResults.Num() == 0)
 	{
-		if (GEngine)
-		{
-			GEngine->AddOnScreenDebugMessage(
-				-1,
-				15.f,
-				FColor::Red,
-				FString::Printf(TEXT("Failed to Find session, Found SessiosResults: %d"), SessionResults.Num())
-			);
-		}
 		JoinButton->SetIsEnabled(true);
 	}
 }
 
 void UMenu::OnJoinSession(EOnJoinSessionCompleteResult::Type Result)
 {
-	if (GEngine)
-	{
-		GEngine->AddOnScreenDebugMessage(
-			-1,
-			15.f,
-			FColor::Red,
-			FString::Printf(TEXT("Failed to join session: %s"), LexToString(Result))
-		);
-	}
 	IOnlineSubsystem* Subsystem = IOnlineSubsystem::Get();
 	if (Subsystem)
 	{
